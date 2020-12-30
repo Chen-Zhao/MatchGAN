@@ -20,6 +20,7 @@ vi /home/chenzhao/project/facegenerator_matchgan/MatchGAN/data_loader.py
 python main.py --mode eval --image_size 128 --c_dim 5 \
                    --dataset CelebA \
                    --celeba_image_dir ./data/celeba/images/ \
+		   --model_save_dir ./matchgan_celeba/models/ \
                    --attr_path ./data/celeba/list_attr_celeba.txt \
                    --selected_attrs Black_Hair Blond_Hair Brown_Hair Male Young \
                    --model_save_dir matchgan_celeba/models \
@@ -112,24 +113,78 @@ labelled_loader = get_loader(celeba_image_dir,
                                      'CelebA',
                                      'train_all',
                                      num_workers)
-	
+
+
 vi main.py
 # else: ...
 labelled_loader = get_loader(celeba_image_dir,
                                      attr_path,
                                      selected_attrs,
                                      False,
-                                     celeba_crop_size,
-                                     image_size,
+                                     128,
+                                     128,
                                      100,
-                                     'Custom',
+                                     'CelebA',
                                      'train_all',
                                      num_workers)
 
+labelled_loader = get_loader(celeba_image_dir,
+                                     attr_path,
+                                     selected_attrs,
+                                     False,
+                                     128,
+                                     128,
+                                     100,
+                                     'CelebA',
+                                     'train_all',
+                                     num_workers)
 
+labelled_loader = get_loader(celeba_image_dir,
+                                     attr_path,
+                                     selected_attrs,
+                                     False,
+                                     128,
+                                     128,
+                                     100,
+                                     'CelebA',
+                                     'eval',
+                                     num_workers,
+				     5)
 
-vi solver.py
-print(out_cls," ",label_org)
+print(len(labelled_loader))
+
+from torch.utils import data
+from torchvision import transforms as T
+from torchvision.datasets import ImageFolder
+from PIL import Image
+from glob import glob
+import torch
+import os
+import random
+import numpy as np
+
+dataset = CelebA(celeba_image_dir, attr_path, selected_attrs, transform, "eval", cls)
+
+#File "/home/chenzhao/project/facegenerator_matchgan/MatchGAN/solver.py", line 646, in attr_cls
+#   pred_score = sess.run(pred_s, feed_dict={x: feed})
+
+#Traceback (most recent call last):
+#  File "/home/chenzhao/project/facegenerator_matchgan/miniconda3/lib/python3.7/site-packages/tensorflow_core/python/client/session.py", line 1365, in _do_call
+#    return fn(*args)
+#  File "/home/chenzhao/project/facegenerator_matchgan/miniconda3/lib/python3.7/site-packages/tensorflow_core/python/client/session.py", line 1350, in _run_fn
+#    target_list, run_metadata)
+#  File "/home/chenzhao/project/facegenerator_matchgan/miniconda3/lib/python3.7/site-packages/tensorflow_core/python/client/session.py", line 1443, in _call_tf_sessionrun
+#    run_metadata)
+#tensorflow.python.framework.errors_impl.FailedPreconditionError: 2 root error(s) found.
+#  (0) Failed precondition: Attempting to use uninitialized value classifier/Conv/BatchNorm/beta
+#	 [[{{node classifier/Conv/BatchNorm/beta/read}}]]
+#	 [[Cast/_3]]
+#  (1) Failed precondition: Attempting to use uninitialized value classifier/Conv/BatchNorm/beta
+#	 [[{{node classifier/Conv/BatchNorm/beta/read}}]]
+#0 successful operations.
+#0 derived errors ignored.
+
+### have to work in notebook model
 
 
 
