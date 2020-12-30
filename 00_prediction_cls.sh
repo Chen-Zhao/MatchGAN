@@ -1,7 +1,7 @@
 
 dos2unix ./data/celeba.bak/list_attr_celeba.txt 
 dos2unix ./data/celeba.bak/list_attr_celeba_20pc.txt
-awk 'NR<=2002{if(NR>2){print $0,"2","None"}else{print $0}}' ./data/celeba.bak/list_attr_celeba.txt > ./data/celeba/list_attr_celeba.txt
+awk 'NR<=2002{if(NR>2){print $0,"0",NR%16}else{print $0}}' ./data/celeba.bak/list_attr_celeba.txt > ./data/celeba/list_attr_celeba.txt
 awk 'NR<=2000' ./data/celeba.bak/list_eval_partition.txt > ./data/celeba/list_eval_partition.txt
 awk 'BEGIN{a=0}{if($1~/002/){a=1}if(a==0){print $0}}' ./data/celeba.bak/list_attr_celeba_20pc.txt > ./data/celeba/list_attr_celeba_20pc.txt
 n=$(wc -l ./data/celeba/list_attr_celeba_20pc.txt | cut -f 1 -d ' '  )
@@ -59,3 +59,77 @@ for i, line in enumerate(lines):
     filename = split[0]
     values = split[1:41]
     flag = int(split[41])
+
+
+
+import os
+import argparse
+from solver import Solver
+from subsample import subsample
+from data_loader import get_loader
+from torch.backends import cudnn
+from itertools import product
+from train_on_fake import train_on_fake
+from gan_test import test_train_on_fake
+
+celeba_image_dir="./data/celeba/images/"
+attr_path="./data/celeba/list_attr_celeba.txt"
+selected_attrs="Black_Hair Blond_Hair Brown_Hair Male Young"
+selected_attrs=selected_attrs.split()
+celeba_crop_size=178
+image_size=128
+batch_size=50
+mode="eval"
+num_workers=1
+
+def generate_sensible_labels(selected_attrs):
+	hair_color_indices = []
+	for i, attr_name in enumerate(selected_attrs):
+		if attr_name in ['Black_Hair', 'Blond_Hair', 'Brown_Hair', 'Gray_Hair']:
+			hair_color_indices.append(i)
+			
+	labels_dict = {}
+	label_id = 0
+	for c_trg in product(*[[-1, 1]] * len(selected_attrs)):
+		hair_color_sublabel = [c_trg[i] for i in hair_color_indices]
+		if sum(hair_color_sublabel) > -1:
+			continue
+		else:
+			labels_dict[label_id] = list(c_trg)
+			label_id += 1
+	return labels_dict
+	
+
+labels_dict = generate_sensible_labels(selected_attrs)
+
+labelled_loader = get_loader(celeba_image_dir,
+                                     attr_path,
+                                     selected_attrs,
+                                     False,
+                                     celeba_crop_size,
+                                     image_size,
+                                     batch_size,
+                                     'CelebA',
+                                     'train_all',
+                                     num_workers)
+	
+vi main.py
+# else: ...
+labelled_loader = get_loader(celeba_image_dir,
+                                     attr_path,
+                                     selected_attrs,
+                                     False,
+                                     celeba_crop_size,
+                                     image_size,
+                                     100,
+                                     'Custom',
+                                     'train_all',
+                                     num_workers)
+
+
+
+vi solver.py
+print(out_cls," ",label_org)
+
+
+
