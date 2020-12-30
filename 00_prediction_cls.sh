@@ -184,7 +184,6 @@ dataset = CelebA(celeba_image_dir, attr_path, selected_attrs, transform, "eval",
 #0 successful operations.
 #0 derived errors ignored.
 
-### have to work in notebook model
-
+### have to work in notebook model with combine training steps
 
 
