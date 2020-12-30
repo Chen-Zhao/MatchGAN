@@ -186,4 +186,60 @@ dataset = CelebA(celeba_image_dir, attr_path, selected_attrs, transform, "eval",
 
 ### have to work in notebook model with combine training steps
 
+## solved with notebook 
+
+## eval not work; need debugs
+
+python main.py --mode test --image_size 128 --c_dim 5 \
+                   --dataset CelebA \
+                   --celeba_dir ./data/celeba_test_128_2000_20201230_fig16/ \
+                   --celeba_image_dir ./data/celeba_test_128_2000_20201230_fig16/images/ \
+                   --model_save_dir ./matchgan_celeba/models/ \
+                   --attr_path ./data/celeba_test_128_2000_20201230_fig16/list_attr_celeba.txt \
+                   --selected_attrs Blond_Hair Brown_Hair Male Young Williams_syndrome \
+                   --model_save_dir matchgan_celeba/models \
+                   --test_iters 200000 \
+                   --device 0 --num_iters 200000 \
+                   --log_dir matchgan_celeba/results_eval_WSmodel/logs_eval \
+                   --result_dir matchgan_celeba/results_eval_WSmodel
+
+python main.py --mode eval --image_size 128 --c_dim 5 \
+                   --dataset CelebA \
+                   --celeba_dir ./data/celeba_test_128_2000_20201230_fig16/ \
+                   --celeba_image_dir ./data/celeba_test_128_2000_20201230_fig16/images/ \
+                   --model_save_dir ./matchgan_celeba/models/ \
+                   --attr_path ./data/celeba_test_128_2000_20201230_fig16/list_attr_celeba.txt \
+                   --selected_attrs Blond_Hair Brown_Hair Male Young Williams_syndrome \
+                   --model_save_dir matchgan_celeba/models \
+                   --test_iters 200000 \
+                   --device 0 --num_iters 200000 \
+                   --log_dir matchgan_celeba/results_eval_WSmodel/logs_eval \
+                   --result_dir matchgan_celeba/results_eval_WSmodel \
+		   --celeba_crop_size 128 \
+		   --celeba_crop_size 128 \
+
+		   
+python main.py --mode eval --image_size 128 --c_dim 5 \
+                   --dataset CelebA \
+                   --model_save_dir ./matchgan_celeba/models/ \
+                   --attr_path ./data/celeba/list_attr_celeba_20pc.txt \
+                   --selected_attrs Blond_Hair Brown_Hair Male Young Williams_syndrome \
+                   --model_save_dir matchgan_celeba/models \
+                   --test_iters 200000 \
+                   --device 0 --num_iters 200000 \
+                   --log_dir matchgan_celeba/results_eval_WSmodel/logs_eval \
+                   --result_dir matchgan_celeba/results_eval_WSmodel
+
+python main.py --mode eval --image_size 128 --c_dim 5 \
+                   --dataset CelebA \
+                   --celeba_image_dir ./data/celeba/images/ \
+                   --model_save_dir ./matchgan_celeba/models/ \
+                   --attr_path ./data/celeba/list_attr_celeba.txt \
+                   --selected_attrs Blond_Hair Brown_Hair Male Young Williams_syndrome \
+                   --model_save_dir matchgan_celeba/models \
+                   --test_iters 200000 \
+                   --device 0 --num_iters 200000 \
+                   --log_dir matchgan_celeba/results/logs_eval \
+                   --result_dir matchgan_celeba/results_eval
+
 
